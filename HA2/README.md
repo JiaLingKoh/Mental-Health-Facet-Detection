@@ -168,16 +168,3 @@ The shell file also describes alternative tests combining NP and ordinary model 
 
 **Possible copied path in the source shell file:** the final `combine_article` block refers to `ha1/article` (rather than `ha2/article`). This should be checked against the actual experiment; it has **not** been automatically changed in this README.
 
-## 5. Items to verify before publication
-
-1. **Missing executable:** Supply the actual `ModelPriorityStrategy.py` required by the initial-stage and NP/extended-evaluation steps, or document a verified functional replacement. The available `ModelPriorityStrategy_ha2.py` is not automatically equivalent.
-2. **Correct names:** Use unsuffixed source filenames (e.g., `ModelPriorityStrategy_ha_common.py`) in the published folder. The first preprocessing command in the original shell script still names `preprocess_modify_0119.py`; this README refers to the supplied renamed `preprocess_modify.py`.
-3. **Preprocessing stage:** `preprocess_modify.py` references `stage_num` without a default, although most commands in the shell script omit `-s`. Explicit `-s 1` and `-s 2` commands are provided here but require a reproduction run to verify the intended usage.
-4. **Complete training:** `train.py` trains only `-3` by default. Confirm whether five other classifiers are already checkpointed or should be retrained. Keep class-specific thresholds in the supplied evaluation scripts unchanged unless the paper's experimental protocol requires otherwise.
-5. **Source data and dependencies:** Include the relevant `lib/` files, input data or access instructions, required prior article predictions, and a validated environment specification. These were not supplied as part of the current HA2 batch.
-6. **Training code review:** The BCE loss uses `.item()` in `train.py`, detaching its contribution from the computation graph. Also, `matplotlib.pyplot` is commented out in this script although its plotting routines use `plt`; confirm whether another import provides it. Avoid changing the implementation without checking against the published experimental results.
-7. **HA2 decision rule:** The main shell path invokes `_ha_common.py`, whereas `ModelPriorityStrategy_ha2.py` implements different decision conditions. Identify which version produced the reported HA2 results before release. `ModelPriorityStrategy_ha_test.py` and `Article_decision_functions.py` are not required by the documented main run.
-8. **Final aggregation:** Confirm that `combineResult.py` receives the expected HA2 `stage2SCORE` field and that the last shell block's `ha1/article` path is intentional.
-9. **Reproduction check:** Run the documented main path in a fresh environment and compare all five-round results with the paper before publishing the README as a fully tested reproduction guide.
-
-This file is intended to explain the **functions and order of execution** of the Python programs in the HA2 directory. The original `.sh` script does not need to be included in the published repository.

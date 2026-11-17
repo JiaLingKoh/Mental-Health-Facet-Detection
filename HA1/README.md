@@ -153,14 +153,3 @@ The preprocessing stage flags are added here because they are required by the cu
 
 The remaining commands in the shell script cover testing with both NP and non-NP data, including a `combine_article` variant, and then call `evaluation.py` and `ModelPriorityStrategy.py`. These are **alternative experiment configurations**, not additional mandatory steps after the main pipeline. Do not run them as part of the primary reproduction sequence unless the corresponding results are reported in the paper and the missing script is supplied.
 
-## 5. Items to verify before publication
-
-1. **Missing code and filename consistency:** `ModelPriorityStrategy.py` is called several times but was not supplied in this set of uploaded files. The required `lib/` modules were also not provided. The uploaded `ModelPriorityStrategy_ha_common(2).py` must have the filename `ModelPriorityStrategy_ha_common.py` in the published folder for the documented command to work (the `(2)` suffix may be an upload-name collision).
-2. **Preprocessing arguments:** the original shell script omits `-s`, although the current `preprocess_modify.py` uses `stage_num` without assigning a default. The commands in this README therefore add explicit stages; their order and input requirements need an actual run-through.
-3. **Training scope:** the original `python train.py` command trains only classifier `-3` by default. Decide whether to use pretrained checkpoints or explicitly retrain all six classifiers as shown above.
-4. **Dependency manifest:** supply a valid, versioned `requirements.txt` matching the environment used for the paper.
-5. **Training loss implementation:** `train.py` uses `.item()` when calculating the BCE contribution to the combined loss, which detaches that contribution from gradient computation. Confirm that the published code matches the experiment reported in the paper before changing training behavior.
-6. **Evaluation scope:** `evaluation_nolabel5.py` excludes class `5` but includes `-3`; `evaluation.py` includes both. Keep their use consistent with the experiment being reproduced.
-7. **Reproduction test:** execute all required stages in a clean environment, confirm the expected intermediate files are produced, and compare final reported metrics with the manuscript.
-
-The README is based on a static review of the supplied scripts; **successful execution and metric reproduction have not yet been established**.
